@@ -1,0 +1,4 @@
+# crontab for fdcs (froxlor docker customer shell)
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+#
+*/5 * * * * root /usr/bin/php /usr/local/fdcs/cron/fdcs-cron.php 1> /dev/null

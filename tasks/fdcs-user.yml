@@ -1,0 +1,10 @@
+---
+- name: add fdcs user
+  user:
+    name: fdcs
+    group: nogroup
+    groups: 'docker'
+    shell: /bin/false
+    createhome: no
+    system: yes
+    state: present

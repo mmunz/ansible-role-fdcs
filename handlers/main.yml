@@ -1,0 +1,4 @@
+---
+# handlers file for c1.froxlor-fdcs
+- name: restart cron
+  service: name=cron state=restarted

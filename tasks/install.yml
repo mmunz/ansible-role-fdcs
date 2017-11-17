@@ -1,0 +1,6 @@
+---
+- name: install fdcs from git
+  git:
+    repo: 'https://github.com/mmunz/fdcs.git'
+    dest: /usr/local/fdcs
+    depth: 0

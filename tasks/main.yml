@@ -1,0 +1,39 @@
+---
+# tasks file for c1.froxlor-fdcs
+- name: Install fdcs
+  include: tasks/install.yml
+- name: Add fdcs user
+  include: tasks/fdcs-user.yml
+- name: create sudoers file
+  template:
+    src: templates/sudoers-fdcs.j2
+    dest: /etc/sudoers.d/fdcs
+    owner: root
+    group: root
+    mode: 0440
+- name: make sure /etc/sudoers.d/ is included
+  lineinfile:
+    path: /etc/sudoers
+    line: '#includedir /etc/sudoers.d'
+- name: setup pam_exec script
+  lineinfile:
+    path: /etc/pam.d/sshd
+    insertafter: '^session    required     pam_env.so'
+    line: 'session    required     pam_exec.so seteuid /usr/local/fdcs/pam/fdcs-pam-sshuser'
+- name: make sure sshd config for group fdcs is in place
+  blockinfile:
+    path: /etc/ssh/sshd_config
+    block: |
+      Match Group fdsc
+      X11Forwarding no
+      AllowTcpForwarding no
+      AuthorizedKeysFile /var/customers/home/%u/.ssh/authorized_keys
+- name: create cron job to update fdcs group membership
+  template:
+    src: templates/cron-fdcs.j2
+    dest: /etc/cron.d/fdcs
+    owner: root
+    group: root
+    mode: 0640
+  notify:
+    - restart cron

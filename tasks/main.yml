@@ -37,3 +37,4 @@
     mode: 0640
   notify:
     - restart cron
+
